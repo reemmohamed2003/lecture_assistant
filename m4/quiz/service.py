@@ -58,6 +58,7 @@ def create_quiz(
     approved_items: Optional[ApprovedFn] = None,
     rng: Optional[random.Random] = None,
     topic_id: Optional[str] = None,
+    verifier: Optional[LLM] = None,
 ) -> QuizCreateResponse:
     profile = profile_service.get_profile(session, user_id, room_id)
     weak = [t.topic_id for t in profile.topics if t.weak]
@@ -80,7 +81,7 @@ def create_quiz(
     # 2. generate the rest from the course chunks, aimed at weak topics
     missing = n - len(items)
     if missing > 0:
-        result = generate_quiz(llm, chunks, missing, weak_topic_ids=weak, rng=rng)
+        result = generate_quiz(llm, chunks, missing, weak_topic_ids=weak, rng=rng, verifier=verifier)
         for it in result.items:
             items.append(it.model_copy(update={"item_id": f"{quiz_id}-g{len(items) + 1}"}))
 

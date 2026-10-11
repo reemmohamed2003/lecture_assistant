@@ -15,7 +15,7 @@ from m4.contracts import (
     SubmitResponse,
     WrongAnswerRow,
 )
-from m4.deps import current_user_id, get_approved_items, get_chunks, get_llm
+from m4.deps import current_user_id, get_approved_items, get_chunks, get_llm, get_verifier
 from m4.profile import service
 from m4.profile.db import get_session
 from m4.quiz import service as quiz_service
@@ -60,6 +60,7 @@ def create_quiz(
     llm=Depends(get_llm),
     chunks=Depends(get_chunks),
     approved=Depends(get_approved_items),
+    verifier=Depends(get_verifier),
 ):
     try:
         return quiz_service.create_quiz(
@@ -72,6 +73,7 @@ def create_quiz(
             chunks=chunks,
             approved_items=approved,
             topic_id=req.topic_id,
+            verifier=verifier,
         )
     except quiz_service.TopicNotFound:
         raise HTTPException(status_code=404, detail="topic not found in this course")

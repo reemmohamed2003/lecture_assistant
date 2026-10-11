@@ -39,3 +39,17 @@ def get_approved_items():
     # TODO: call M5's approved-items endpoint. Empty for now, so quizzes fall
     # back to generated items without an error.
     return lambda room_id, topic_ids: []
+
+
+@lru_cache
+def _verifier():
+    provider = os.getenv("M4_VERIFY_PROVIDER")
+    if not provider:
+        return None  # verification is off unless you set it in .env
+    from m4.quiz.llm import make_llm
+
+    return make_llm(provider, os.getenv("M4_VERIFY_MODEL") or None)
+
+
+def get_verifier():
+    return _verifier()

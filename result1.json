@@ -1,0 +1,60 @@
+{
+  "answers": [
+    {
+      "item_id": "quiz-62a6875b-g1",
+      "choice": 0,
+      "confidence": 1
+    },
+    {
+      "item_id": "quiz-62a6875b-g2",
+      "choice": 1,
+      "confidence": 1
+    },
+    {
+      "item_id": "quiz-62a6875b-g3",
+      "choice": 2,
+      "confidence": 1
+    },
+    {
+      "item_id": "quiz-62a6875b-g4",
+      "choice": null,
+      "confidence": 0
+    },
+    {
+      "item_id": "quiz-62a6875b-g5",
+      "choice": null,
+      "confidence": 0
+    },
+    {
+      "item_id": "quiz-62a6875b-g6",
+      "choice": 2,
+      "confidence": 1
+    },
+    {
+      "item_id": "quiz-62a6875b-g7",
+      "choice": 2,
+      "confidence": 1
+    },
+    {
+      "item_id": "quiz-62a6875b-g8",
+      "choice": null,
+      "confidence": 0
+    },
+    {
+      "item_id": "quiz-62a6875b-g9",
+      "choice": 1,
+      "confidence": 1
+    },
+    {
+      "item_id": "quiz-62a6875b-g10",
+      "choice": 0,
+      "confidence": 1
+    }
+  ],
+  "score": 0.5,
+  "needs_review": [
+    "quiz-62a6875b-g4",
+    "quiz-62a6875b-g5",
+    "quiz-62a6875b-g8"
+  ]
+}

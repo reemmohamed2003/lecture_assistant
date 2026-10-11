@@ -93,6 +93,29 @@ def _find_markers(gray: np.ndarray) -> dict[str, tuple[float, float]]:
     quad = np.array([tl, tr, br, bl], dtype=np.float32)
     if cv2.contourArea(quad) < 0.08 * img_area:
         raise SheetError("the page is too small in the photo; move closer")
+
+    # The four squares must form the same rectangle as on the printed page. Without this check,
+    # a photo that cuts off the bottom of the page makes filled bubbles pass as corner squares
+    # and the sheet is read wrongly instead of rejected.
+    def _dist(a, b):
+        return float(np.hypot(a[0] - b[0], a[1] - b[1]))
+
+    top, bottom = _dist(tl, tr), _dist(bl, br)
+    left, right = _dist(tl, bl), _dist(tr, br)
+    cx, cy = L.MARKER_CENTERS["tl"], L.MARKER_CENTERS["br"]
+    want = (L.MARKER_CENTERS["tr"][0] - cx[0]) / (cy[1] - cx[1])  # width / height of the square layout
+    ok = (
+        min(top, bottom) > 0
+        and min(left, right) > 0
+        and abs(top - bottom) / max(top, bottom) < 0.25
+        and abs(left - right) / max(left, right) < 0.25
+        and abs(((top + bottom) / (left + right)) - want) / want < 0.25
+    )
+    if not ok:
+        raise SheetError(
+            "the four corner squares do not form the page; photograph the WHOLE page "
+            "with all four black corner squares visible (nothing cut off, no stray marks)"
+        )
     return found
 
 

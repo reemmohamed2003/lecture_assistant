@@ -1,0 +1,165 @@
+{
+  "quiz_id": "quiz-62a6875b",
+  "items": [
+    {
+      "item_id": "quiz-62a6875b-g1",
+      "topic_id": "1-an-introduction-to-large-language-mode",
+      "stem": "What is the primary function of word2vec in improving upon bag-of-words approaches?",
+      "options": [
+        "It counts individual word frequencies to create sparse vector representations for text analysis.",
+        "It uses neural networks to learn dense vector embeddings that capture the semantic meaning of words.",
+        "It filters out stop words to reduce the dimensionality of the input text before classification tasks.",
+        "It translates raw text into binary data structures to speed up the storage and retrieval processes."
+      ],
+      "right_choice": 1,
+      "explanation": "Word2vec improves on bag-of-words by using neural networks to generate dense vector embeddings that represent the semantic relationships between words, rather than just counting word occurrences.",
+      "file_name": "hands-on-llms.pdf",
+      "page": 28,
+      "source": "generated"
+    },
+    {
+      "item_id": "quiz-62a6875b-g2",
+      "topic_id": "1-an-introduction-to-large-language-mode",
+      "stem": "In the context of Large Language Models, what is the primary function of the encoding step?",
+      "options": [
+        "To decode the final output tokens into human-readable text format",
+        "To generate a context representation in the form of an embedding for the decoder",
+        "To process outputs sequentially one at a time before feeding them back into the model",
+        "To convert numerical word indices directly into binary values for storage"
+      ],
+      "right_choice": 1,
+      "explanation": "The encoding step is responsible for creating the best possible representation of the input, known as an embedding, which then acts as the context for the decoder.",
+      "file_name": "hands-on-llms.pdf",
+      "page": 34,
+      "source": "generated"
+    },
+    {
+      "item_id": "quiz-62a6875b-g3",
+      "topic_id": "1-an-introduction-to-large-language-mode",
+      "stem": "What is the primary purpose of the bag-of-words technique in the context of early language AI?",
+      "options": [
+        "To generate new coherent sentences based on statistical probability",
+        "To segment spoken audio into individual phonetic units for analysis",
+        "To represent unstructured text in a manner suitable for computational processing",
+        "To translate natural language into machine code for direct execution"
+      ],
+      "right_choice": 2,
+      "explanation": "The bag-of-words method is a foundational technique used to convert unstructured textual data into a structured numerical representation, making it processable by computers.",
+      "file_name": "hands-on-llms.pdf",
+      "page": 26,
+      "source": "generated"
+    },
+    {
+      "item_id": "quiz-62a6875b-g4",
+      "topic_id": "1-an-introduction-to-large-language-mode",
+      "stem": "How is the term \"large language model\" defined within the scope of this specific text?",
+      "options": [
+        "It describes only systems that use bag-of-words representations to achieve accurate text classification results.",
+        "It applies solely to models that match the specific architectural capabilities of GPT-4 for generative tasks.",
+        "It refers strictly to models with billions of parameters that are capable of generating new text sequences.",
+        "It includes models with fewer than one billion parameters that do not generate text and can run on consumer hardware."
+      ],
+      "right_choice": 3,
+      "explanation": "The text explicitly states that for the purpose of the book, \"large language models\" includes models that do not generate text and can be run on consumer hardware, specifically mentioning those with fewer than 1 billion parameters.",
+      "file_name": "hands-on-llms.pdf",
+      "page": 51,
+      "source": "generated"
+    },
+    {
+      "item_id": "quiz-62a6875b-g5",
+      "topic_id": "1-an-introduction-to-large-language-mode",
+      "stem": "What is a primary advantage of using open local large language models compared to relying on external API connections?",
+      "options": [
+        "They automatically update their weights whenever the original development organization releases a new version.",
+        "They guarantee that the model's training data and source code are always fully public and unlicensed.",
+        "They grant users complete control, allowing for fine-tuning and processing sensitive data locally.",
+        "They require no hardware resources and can run on any standard computer without modification."
+      ],
+      "right_choice": 2,
+      "explanation": "Open local models provide complete user control over the infrastructure, enabling independent fine-tuning and secure handling of sensitive information without external dependencies.",
+      "file_name": "hands-on-llms.pdf",
+      "page": 59,
+      "source": "generated"
+    },
+    {
+      "item_id": "quiz-62a6875b-g6",
+      "topic_id": "1-an-introduction-to-large-language-mode",
+      "stem": "What is a primary limitation of splitting text on whitespace for tokenization?",
+      "options": [
+        "It fails to handle languages where words are not separated by spaces, such as Mandarin",
+        "It requires counting the frequency of every unique word across all sentences",
+        "It prevents the creation of numeric representations for individual tokens",
+        "It creates a vocabulary that is too large to be represented as a bag of words"
+      ],
+      "right_choice": 0,
+      "explanation": "Splitting on whitespace is ineffective for languages like Mandarin because these languages do not use spaces to separate individual words, leading to inaccurate tokenization.",
+      "file_name": "hands-on-llms.pdf",
+      "page": 27,
+      "source": "generated"
+    },
+    {
+      "item_id": "quiz-62a6875b-g7",
+      "topic_id": "1-an-introduction-to-large-language-mode",
+      "stem": "Why is the amount of VRAM on a GPU considered a critical factor for the efficient use of large language models?",
+      "options": [
+        "It influences the ability of the model to generate creative and diverse text outputs",
+        "It dictates the available storage space for saving the model's training datasets",
+        "It determines the maximum number of parameters an LLM can load into memory for processing",
+        "It controls the speed at which the GPU can communicate with the system's main CPU"
+      ],
+      "right_choice": 2,
+      "explanation": "VRAM (video random-access memory) is the memory available on the GPU, and having more of it allows for more efficient and faster operation of large language models by accommodating their computational needs.",
+      "file_name": "hands-on-llms.pdf",
+      "page": 56,
+      "source": "generated"
+    },
+    {
+      "item_id": "quiz-62a6875b-g8",
+      "topic_id": "1-an-introduction-to-large-language-mode",
+      "stem": "What distinguishes open-source base large language models in terms of their intended use?",
+      "options": [
+        "They are often classified as foundation models that can be adapted for specific tasks.",
+        "They are proprietary variants that cannot be modified or fine-tuned by external developers.",
+        "They are primarily designed to operate as standalone chat interfaces for end-users.",
+        "They are restricted to handling contexts shorter than the maximum allowable length."
+      ],
+      "right_choice": 0,
+      "explanation": "Open-source base models are frequently referred to as foundation models because they serve as a base that can be fine-tuned for specific downstream tasks, such as instruction following.",
+      "file_name": "hands-on-llms.pdf",
+      "page": 49,
+      "source": "generated"
+    },
+    {
+      "item_id": "quiz-62a6875b-g9",
+      "topic_id": "1-an-introduction-to-large-language-mode",
+      "stem": "What specific hardware requirement is noted for running the Phi-3-mini model in its standard configuration?",
+      "options": [
+        "It necessitates approximately 12 GB of storage space to load correctly.",
+        "It requires less than 8 GB of video memory to operate effectively.",
+        "It can only run on dedicated cloud servers with high-speed GPUs.",
+        "It demands a minimum of 16 GB of system RAM to process tokens."
+      ],
+      "right_choice": 1,
+      "explanation": "The text specifies that Phi-3-mini is small enough to run on devices with less than 8 GB of VRAM, while further reducing this requirement with quantization.",
+      "file_name": "hands-on-llms.pdf",
+      "page": 61,
+      "source": "generated"
+    },
+    {
+      "item_id": "quiz-62a6875b-g10",
+      "topic_id": "1-an-introduction-to-large-language-mode",
+      "stem": "How did the parameter count change between GPT-2 and GPT-3?",
+      "options": [
+        "GPT-2 had 1.5 billion parameters, while GPT-3 used 175 billion parameters.",
+        "Both GPT-2 and GPT-3 utilized approximately 175 billion parameters.",
+        "GPT-2 used 175 billion parameters, while GPT-3 had 1.5 billion parameters.",
+        "GPT-2 had 175 billion parameters, and GPT-3 had 1.5 billion parameters."
+      ],
+      "right_choice": 0,
+      "explanation": "GPT-2 was built with 1.5 billion parameters, whereas GPT-3 was significantly larger with 175 billion parameters, illustrating the trend of increasing model size.",
+      "file_name": "hands-on-llms.pdf",
+      "page": 46,
+      "source": "generated"
+    }
+  ]
+}

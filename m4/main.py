@@ -2,5 +2,5 @@ from fastapi import FastAPI
 
 from m4.api import router
 
-app = FastAPI(title="EduPilot M4")
+app = FastAPI(title="Rafeeq")
 app.include_router(router)

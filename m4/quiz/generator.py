@@ -41,6 +41,9 @@ def build_prompt(chunk: dict, problems: Optional[list[str]] = None) -> str:
         "- The question must make sense on its own. Never write 'the text', "
         "'the passage', 'the figure', 'provided', 'this example' or 'according to'.\n"
         "- Do not ask about code line numbers or small numeric constants.\n"
+        "- Ask about ideas and concepts, not about variable names, code details "
+        "or what a specific line does. Do not refer to 'the code', 'the list' or "
+        "'the evaluator' as if the reader can see them.\n"
         "- The explanation says in one or two sentences why the answer is "
         "correct. It does not say 'the text states'.\n"
         'Return ONLY JSON: {"stem": str, "options": [4 strings], '
@@ -100,17 +103,43 @@ def shuffle_options(item: QuizItem, rng: random.Random) -> QuizItem:
     )
 
 
+def verify_item(verifier: LLM, chunk: dict, item: QuizItem) -> tuple[bool, str]:
+    """Blind check: a second model answers the question using only the source page.
+    Returns (ok, reason). If the verifier is down (rate limit...) the item is kept."""
+    from m4.eval.judge_quiz import build_judge_prompt, parse_judgement
+
+    try:
+        raw = verifier(build_judge_prompt(chunk["text"][:MAX_CHARS_IN_PROMPT], item.stem, item.options))
+    except Exception:
+        return True, ""
+    verdict = parse_judgement(raw)
+    if verdict is None:
+        return True, ""
+    if verdict["answer"] != item.right_choice:
+        return False, "a second reader chose a different option, so the correct answer is not clearly the only one"
+    if not verdict["supported"]:
+        return False, "the source does not clearly support exactly one answer: " + verdict["reason"]
+    return True, ""
+
+
 def generate_item(
-    llm: LLM, chunk: dict, item_id: str, rng: Optional[random.Random] = None
+    llm: LLM,
+    chunk: dict,
+    item_id: str,
+    rng: Optional[random.Random] = None,
+    verifier: Optional[LLM] = None,
 ) -> tuple[Optional[QuizItem], bool]:
     """Returns (item or None, passed_on_first_try). Regenerates once on failure."""
     rng = rng or random.Random()
-    item, problems = _try_build(llm(build_prompt(chunk)), chunk, item_id)
-    if item is not None and not problems:
-        return shuffle_options(item, rng), True
-    item, problems = _try_build(llm(build_prompt(chunk, problems)), chunk, item_id)
-    if item is not None and not problems:
-        return shuffle_options(item, rng), False
+    problems: list[str] = []
+    for attempt in range(2):
+        item, problems = _try_build(llm(build_prompt(chunk, problems or None)), chunk, item_id)
+        if item is not None and not problems and verifier is not None:
+            ok, why = verify_item(verifier, chunk, item)
+            if not ok:
+                problems = [why]
+        if item is not None and not problems:
+            return shuffle_options(item, rng), attempt == 0
     return None, False
 
 
@@ -158,10 +187,15 @@ def generate_quiz(
     weak_topic_ids: Iterable[str] = (),
     skip_topics: Iterable[str] = DEFAULT_SKIP_TOPICS,
     rng: Optional[random.Random] = None,
+    verifier: Optional[LLM] = None,
 ) -> GenerationResult:
     result = GenerationResult(quiz_id=f"quiz-{uuid.uuid4().hex[:8]}")
-    for i, chunk in enumerate(select_chunks(chunks, n, weak_topic_ids, skip_topics, rng)):
-        item, first_try = generate_item(llm, chunk, f"{result.quiz_id}-{i + 1}", rng)
+    # with a verifier some pages are dropped, so pick spare pages and stop at n
+    picks = select_chunks(chunks, n * 2 if verifier else n, weak_topic_ids, skip_topics, rng)
+    for i, chunk in enumerate(picks):
+        if verifier is not None and len(result.items) >= n:
+            break
+        item, first_try = generate_item(llm, chunk, f"{result.quiz_id}-{i + 1}", rng, verifier)
         result.attempted += 1
         result.first_try_ok += int(first_try)
         if item is not None:

@@ -116,3 +116,57 @@ def test_context_dependent_questions_are_caught():
                  "What does the figure show about attention?"]:
         assert any("on its own" in p for p in check_item(make_item(stem=stem)))
     assert check_item(make_item(stem="What does a tokenizer do?")) == []
+    
+    
+def test_references_to_unseen_context_are_caught():
+    for stem in [
+        "Which hardware was used, as referenced in the context of high computing costs?",
+        "What is the purpose of the four combinations described in relation to predictions?",
+    ]:
+        assert any("on its own" in p for p in check_item(make_item(stem=stem)))
+
+
+def test_normal_context_wording_is_allowed():
+    assert check_item(make_item(stem="In the context of NLP, what is a token?")) == []
+    
+    
+def test_references_to_unseen_context_are_caught():
+    for stem in [
+        "Which hardware was used, as referenced in the context of high computing costs?",
+        "What is the purpose of the four combinations described in relation to predictions?",
+        "In the specific architecture described using two networks, what happens?",
+    ]:
+        assert any("on its own" in p for p in check_item(make_item(stem=stem)))
+
+
+def test_verifier_drops_items_a_second_reader_disagrees_with():
+    import json
+
+    from m4.quiz.generator import generate_item
+
+    chunk = {"topic_id": "t", "topic_name": "T", "file_name": "b.pdf", "page": 3, "text": "x" * 500}
+    reply = json.dumps({
+        "stem": "What does a tokenizer do to raw text?",
+        "options": ["Splits it into tokens", "Trains the model", "Stores vectors", "Draws images"],
+        "right_choice": 0,
+        "explanation": "It splits text into tokens.",
+    })
+    llm = lambda prompt: reply
+    agree = lambda prompt: '{"answer": "A", "supported": true, "reason": "ok"}'
+    disagree = lambda prompt: '{"answer": "B", "supported": true, "reason": "no"}'
+
+    item, first_try = generate_item(llm, chunk, "q-1", verifier=agree)
+    assert item is not None and first_try
+    item, _ = generate_item(llm, chunk, "q-1", verifier=disagree)
+    assert item is None
+    
+    
+def test_option_that_repeats_the_question_is_caught():
+    stem = "A model that has gone through pretraining is called a pretrained model, even after fine-tuning."
+    options = [stem, "Only encoder-only models are pretrained", "Pretrained means never fine-tuned", "Pretraining needs labeled data"]
+    assert any("repeats the question" in p for p in check_item(make_item(stem=stem, options=options)))
+
+
+def test_described_architecture_phrase_is_caught():
+    stem = "What is the main purpose of the encoding step in the described architecture?"
+    assert any("on its own" in p for p in check_item(make_item(stem=stem)))
